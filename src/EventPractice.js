@@ -2,19 +2,22 @@ import React, { Component } from "react";
 
 class EventPractice extends Component {
   state = {
-    message: "", // 초깃값 설정
+    message: "",
+    usernname: "",
   };
 
   handleChange = (e) => {
     this.setState({
-      message: e.target.value,
+      // e.target.name을 활용하여 input이 여러 개지만, 메서드를 여러 개 생성하지 않아도 된다.
+      [e.target.name]: e.target.value,
     });
   };
 
   handleClick = () => {
-    alert(this.state.message);
+    alert(this.state.usernname + ": " + this.state.message);
     this.setState({
-      message: "", // 값 초기화
+      message: "",
+      usernname: "",
     });
   };
 
@@ -22,6 +25,13 @@ class EventPractice extends Component {
     return (
       <div>
         <h1>이벤트 연습</h1>
+        <input
+          type="text"
+          name="username"
+          placeholder="사용자 명"
+          value={this.state.usernname}
+          onChange={this.handleChange}
+        />
         <input
           type="text"
           name="message"
