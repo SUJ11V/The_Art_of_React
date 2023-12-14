@@ -19,6 +19,7 @@ class ValidationSample extends Component {
       clicked: true,
       validated: this.state.password === "0000", // validated 값을 검증 결과로 업데이트 (0000이면 true)
     });
+    this.input.focus(); // input에 focus가 가도록 설정
   };
 
   handleEnterClick = (e) => {
@@ -42,6 +43,7 @@ class ValidationSample extends Component {
               : "" // clicked가 false면, 빈 문자열로 설정
           }
           onKeyDown={this.handleEnterClick} // 편의를 위해 enter 입력 이벤트 추가
+          ref={(ref) => (this.input = ref)} // 콜백함수 사용
         />
         {/* onClick 이벤트 발생 시 handelButtonClick을 호출 */}
         <button onClick={this.handleButtonClick}>검증하기</button>
