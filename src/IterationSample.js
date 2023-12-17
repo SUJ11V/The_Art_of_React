@@ -23,7 +23,19 @@ const IterationSample = () => {
     setInputText(""); // inputText 비우기
   };
 
-  const namesList = names.map((name) => <li key={name.id}>{name.text}</li>);
+  const onRemove = (id) => {
+    // 불변성을 유지하면서 업데이트를 하기 위해 filter 사용
+    // 더블 클릭된 값의 id만 제외시킴
+    const nextNames = names.filter((name) => name.id !== id);
+    setNames(nextNames);
+  };
+
+  const namesList = names.map((name) => (
+    // 더블 클릭 시 onRemonve 실행
+    <li key={name.id} onDoubleClick={() => onRemove(name.id)}>
+      {name.text}
+    </li>
+  ));
   return (
     <>
       <input value={inputText} onChange={onChange} />
