@@ -11,7 +11,7 @@ const Info = () => {
       name,
       nickname,
     });
-  });
+  }, []); // 두 번째 파라미터에 빈 배열을 넣어주면 마운트될 때만 실행시킬 수 있다.
 
   const onChangeName = (e) => {
     setName(e.target.value);
