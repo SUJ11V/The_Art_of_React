@@ -1,33 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useReducer } from "react";
+
+function reducer(state, action) {
+  return {
+    ...state,
+    [action.name]: action.value,
+  };
+}
 
 const Info = () => {
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [state, dispatch] = useReducer(reducer, {
+    name: "", // 기본 값 공백으로 설정
+    nickname: "",
+  });
 
-  // useEffect: 리액트 컴포넌트가 렌더링될 때마다 특정 작업을 수행하도록 설정
-  useEffect(() => {
-    console.log("effect");
-    console.log(name);
-    // 컴포넌트가 언마운트되기 전이나 업데이트되기 직전에 어떠한 작업을 수행하고 싶다면 뒷정리(cleanup) 함수를 반환해 주어야 함
-    return () => {
-      console.log("cleanup");
-      console.log(name);
-    };
-  }, [name]);
+  const { name, nickname } = state;
 
-  const onChangeName = (e) => {
-    setName(e.target.value);
-  };
-
-  const onChangeNickname = (e) => {
-    setNickname(e.target.value);
+  const onChange = (e) => {
+    dispatch(e.target);
   };
 
   return (
     <div>
       <div>
-        <input value={name} onChange={onChangeName} />
-        <input value={nickname} onChange={onChangeNickname} />
+        {/* e.target을 사용하기 때문에 name 속성을 적어줘야 함! */}
+        <input name="name" value={name} onChange={onChange} />
+        <input name="nickname" value={nickname} onChange={onChange} />
       </div>
       <div>
         <div>
