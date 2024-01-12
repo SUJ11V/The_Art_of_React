@@ -1,11 +1,5 @@
-import React, { useReducer } from "react";
-
-function reducer(state, action) {
-  return {
-    ...state,
-    [action.name]: action.value,
-  };
-}
+import React from "react";
+import useInputs from "./useInputs";
 
 const Info = () => {
   const [state, dispatch] = useReducer(reducer, {
