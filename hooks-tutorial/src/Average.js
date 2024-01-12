@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useRef } from "react";
 
 // useMemo는 숫자, 문자열, 객체와 같은 일반 값을 재사용할 때 사용
 // useCallback은 함수를 재사용할 때 사용
@@ -14,6 +14,7 @@ const getAverage = (numbers) => {
 const Average = () => {
   const [list, setList] = useState([]); // 초기 설정을 빈 배열로 설정
   const [number, setNumber] = useState(""); // 초기 설정을 공백으로 설정
+  const inputEl = useRef(null);
 
   // useCallback을 사용하지 않았을 땐 리렌더링될 때마다 함수가 새로 생성됐었음
   // useCallback의 첫 번째 파라미터: 생성하고 싶은 함수
@@ -28,6 +29,7 @@ const Average = () => {
       const nextList = list.concat(parseInt(number));
       setList(nextList);
       setNumber("");
+      inputEl.current.focus(); // focus가 input으로 가도록 설정
     },
     [number, list] // number 혹은 list가 바뀌었을 때만 함수 생성
   );
@@ -39,7 +41,8 @@ const Average = () => {
 
   return (
     <div>
-      <input value={number} onChange={onChange} />
+      {/* input에 접근하기 위해 useRef 사용 */}
+      <input value={number} onChange={onChange} ref={inputEl} />
       <button onClick={onInsert}>등록</button>
       <ul>
         {/* map 함수를 이용하여 list에 li 태그 부여 
