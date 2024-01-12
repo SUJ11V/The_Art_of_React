@@ -1,4 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
+
+// useMemo는 숫자, 문자열, 객체와 같은 일반 값을 재사용할 때 사용
+// useCallback은 함수를 재사용할 때 사용
 
 const getAverage = (numbers) => {
   console.log("평균값 계산 중...");
@@ -12,16 +15,22 @@ const Average = () => {
   const [list, setList] = useState([]); // 초기 설정을 빈 배열로 설정
   const [number, setNumber] = useState(""); // 초기 설정을 공백으로 설정
 
-  const onChange = (e) => {
+  // useCallback을 사용하지 않았을 땐 리렌더링될 때마다 함수가 새로 생성됐었음
+  // useCallback의 첫 번째 파라미터: 생성하고 싶은 함수
+  // 두 번째 파라미터: 배열. 어떤 값이 바뀌었을 때 함수를 새로 생성하는 지 명시
+  const onChange = useCallback((e) => {
     setNumber(e.target.value);
-  };
+  }, []); // 컴포넌트가 처음 렌더링될 때만 함수 생성(기존 값을 조회할 필요 없기 때문)
 
   // 등록 버튼을 누르면 리스트에 값이 추가됨
-  const onInsert = (e) => {
-    const nextList = list.concat(parseInt(number));
-    setList(nextList);
-    setNumber("");
-  };
+  const onInsert = useCallback(
+    (e) => {
+      const nextList = list.concat(parseInt(number));
+      setList(nextList);
+      setNumber("");
+    },
+    [number, list] // number 혹은 list가 바뀌었을 때만 함수 생성
+  );
 
   // useMemo를 이용하여 list의 값이 바뀌었을 때만 getAvergae를 실행
   // list의 값이 바뀌지 않았다면 이전에 연산했던 결과를 다시 사용
