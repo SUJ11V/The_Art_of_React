@@ -525,7 +525,7 @@ module.exports = function (webpackEnv) {
                   },
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                   // 모든 sass 파일에서 utils.scss를 자동으로 불러온다.
-                  prependData: '@import "utils";',
+                  additionalData: `@import "utils";`,
                 },
               }),
               // Don't consider CSS imports dead code even if the
