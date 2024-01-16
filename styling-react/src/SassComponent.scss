@@ -1,8 +1,14 @@
-// ./config/webpack.config.js에서 커스텀 마이징 해주기에
+// ./config/webpack.config.js에서 커스텀 마이징 해주기에 생략
 // @import 'utils.scss';
 
 .SassComponent {
     display: flex;
+    background: $oc-gray-2;
+    // include-media 라이브러리 사용
+    @include media('<768px') { // 화면 가로 사이즈가 768px 미만이 되면
+        // open-colors 라이브러 사용
+        background: $oc-gray-9; // 배경을 어둡게
+    }
     .box { // 일반 CSS에서는 '.SassComponent .box'와 마찬가지
         background: red;
         cursor: pointer;
