@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     &:nth-child(even) { // 부모 요소 중 짝수
-        background: #f8f9fa;
+        background: #f8f9fa; // 옅은 회색
     }
 
     .checkbox {
@@ -24,7 +24,7 @@
             }
             .text {
                 color: #adb5bd;
-                text-decoration: line-through;
+                text-decoration: line-through; // 취소선
             }
         }
     }
