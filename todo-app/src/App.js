@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useReducer, useRef, useCallback } from 'react';
 import TodoTemplate from './components/TodoTemplate';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
@@ -16,12 +16,29 @@ function createBulkTodos() {
   return array;
 }
 
+// useReducer를 사용하면 상태를 업데이트하는 로직을 모아서 컴포넌트 바깥에 둘 수 있다는 장점이 있다.
+function todoReducer(todos, action) {
+  switch (action.type) {
+    case 'INSERT': // 새로 추가
+      return todos.concat(action.todo);
+    case 'REMOVE':
+      return todos.filter((todo) => todo.id !== action.id);
+    case 'TOGGLE':
+      return todos.map((todo) =>
+        todo.id === action.id ? { ...todo, checked: !todo.checked } : todo,
+      );
+    default:
+      return todos;
+  }
+}
+
 const App = () => {
-  const [todos, setTodos] = useState(createBulkTodos);
+  // 컴포넌트가 맨 처음 렌더링될 때만 createBulkTodos 함수 호출
+  const [todos, dispatch] = useReducer(todoReducer, undefined, createBulkTodos);
 
   // 고윳값으로 사용될 id
   // ref를 사용하여 변수 담기 -> id값은 렌더링되는 정보가 아니고 새로운 항목을 만들 때 단순 참조하기 때문에 useState말고 useRef 사용
-  const nextId = useRef(4);
+  const nextId = useRef(2501);
 
   const onInsert = useCallback((text) => {
     const todo = {
@@ -29,32 +46,17 @@ const App = () => {
       text,
       checked: false,
     };
-    // todos 배열이 바뀔 때마다 새로 함수가 만들어지는 걸 방지하기 위해 함수형 업데이트 기능 사용(성능 최적화)
-    setTodos((todos) => todos.concat(todo)); // 할 일 목록에 추가
+    dispatch({ type: 'INSERT', todo });
     nextId.current += 1; // id값 1씩 순차적으로 증가
   });
 
-  const onRemove = useCallback(
-    (id) => {
-      // 함수형 업데이트 기능 사용(성능 최적화)
-      setTodos((todos) => todos.filter((todo) => todo.id !== id)); // id값을 가져와 id값에 해당되지 않는 값만 남김
-    },
-    [todos], // todos에 변화가 생겼을 때, 함수 생성
-  );
+  const onRemove = useCallback((id) => {
+    dispatch({ type: 'REMOVE', id });
+  }, []);
 
-  const onToggle = useCallback(
-    (id) => {
-      // 함수형 업데이트 기능 사용(성능 최적화)
-      setTodos((todos) =>
-        todos.map((todo) =>
-          // 참이면 todo의 checked를 반전시킴
-          // 거짓이면 todo 유지
-          todo.id === id ? { ...todo, checked: !todo.checked } : todo,
-        ),
-      );
-    },
-    [todos], // todos에 변화가 생겼을 때, 함수 생성
-  );
+  const onToggle = useCallback((id) => {
+    dispatch({ type: 'TOGGLE', id });
+  }, []);
 
   return (
     <TodoTemplate>
