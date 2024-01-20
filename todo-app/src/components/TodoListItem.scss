@@ -1,10 +1,17 @@
+.TodoListItem-virtualized {
+    & + & { // 엘리먼트 사이사이에 테두리
+        border-top: 1px solid #dee2e6;
+    }
+    
+    &:nth-child(even) { // 부모 요소 중 짝수
+        background: #f8f9fa; // 옅은 회색
+    }
+}
+
 .TodoListItem {
     padding: 1rem;
     display: flex;
     align-items: center;
-    &:nth-child(even) { // 부모 요소 중 짝수
-        background: #f8f9fa; // 옅은 회색
-    }
 
     .checkbox {
         cursor: pointer;
@@ -38,9 +45,5 @@
         &:hover {
             color: #ff8787;
         }
-    }
-
-    & + & { // 엘리먼트 사이사이에 테두리
-        border-top: 1px solid #dee2e6;
     }
 }
