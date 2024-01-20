@@ -43,11 +43,24 @@ const App = () => {
     [todos], // todos에 변화가 생겼을 때, 함수 생성
   );
 
+  const onToggle = useCallback(
+    (id) => {
+      setTodos(
+        todos.map((todo) =>
+          // 참이면 todo의 checked를 반전시킴
+          // 거짓이면 todo 유지
+          todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+        ),
+      );
+    },
+    [todos], // todos에 변화가 생겼을 때, 함수 생성
+  );
+
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
       {/* 배열을 TodoList에 props로 전달하여 TodoItem으로 변환하여 렌더링 */}
-      <TodoList todos={todos} onRemove={onRemove} />
+      <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
     </TodoTemplate>
   );
 };
