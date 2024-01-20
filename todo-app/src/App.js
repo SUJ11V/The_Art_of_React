@@ -21,7 +21,7 @@ const App = () => {
 
   // 고윳값으로 사용될 id
   // ref를 사용하여 변수 담기 -> id값은 렌더링되는 정보가 아니고 새로운 항목을 만들 때 단순 참조하기 때문에 useState말고 useRef 사용
-  const nextId = useRef(2501);
+  const nextId = useRef(4);
 
   const onInsert = useCallback((text) => {
     const todo = {
@@ -29,20 +29,23 @@ const App = () => {
       text,
       checked: false,
     };
-    setTodos(todos.concat(todo)); // 할 일 목록에 추가
+    // todos 배열이 바뀔 때마다 새로 함수가 만들어지는 걸 방지하기 위해 함수형 업데이트 기능 사용(성능 최적화)
+    setTodos((todos) => todos.concat(todo)); // 할 일 목록에 추가
     nextId.current += 1; // id값 1씩 순차적으로 증가
   });
 
   const onRemove = useCallback(
     (id) => {
-      setTodos(todos.filter((todo) => todo.id !== id)); // id값을 가져와 id값에 해당되지 않는 값만 남김
+      // 함수형 업데이트 기능 사용(성능 최적화)
+      setTodos((todos) => todos.filter((todo) => todo.id !== id)); // id값을 가져와 id값에 해당되지 않는 값만 남김
     },
     [todos], // todos에 변화가 생겼을 때, 함수 생성
   );
 
   const onToggle = useCallback(
     (id) => {
-      setTodos(
+      // 함수형 업데이트 기능 사용(성능 최적화)
+      setTodos((todos) =>
         todos.map((todo) =>
           // 참이면 todo의 checked를 반전시킴
           // 거짓이면 todo 유지
