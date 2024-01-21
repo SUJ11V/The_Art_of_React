@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState } from 'react';
-import produce from 'immer';
+import { produce } from 'immer';
 
 const App = () => {
   const nextId = useRef(1);
@@ -14,9 +14,8 @@ const App = () => {
     (e) => {
       const { name, value } = e.target;
       setForm(
-        // 첫 번째 파라미터: 수정하고 싶은 상태
-        // 두 번째 파라미터: 상태를 어떻게 업데이트할지 정의하는 함수
-        produce(form, (draft) => {
+        // 첫 번째 파라미터가 함수 형태라면 업데이트 함수를 반환
+        produce((draft) => {
           draft[name] = value;
         }),
       );
@@ -37,7 +36,7 @@ const App = () => {
       // array에 새 항목 등록
       setData(
         // immer를 사용할 땐 직접적인 영향을 미치는 push, splice 등의 함수를 사용해도 무방하다.
-        produce(data, (draft) => {
+        produce((draft) => {
           draft.array.push(info);
         }),
       );
@@ -58,7 +57,7 @@ const App = () => {
     (id) => {
       setData(
         // 이 경우 배열 내장 함수인 filter를 쓰는 것이 코드가 더 깔끔함
-        produce(data, (draft) => {
+        produce((draft) => {
           draft.array.splice(
             draft.array.findIndex((info) => info.id === id),
             1,
