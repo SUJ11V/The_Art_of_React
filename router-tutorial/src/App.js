@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 import About from './About';
 import Home from './Home';
-import Profile from './Profile';
+import Profiles from './Profiles';
 
 const App = () => {
   return (
@@ -15,17 +15,16 @@ const App = () => {
           <Link to="/about">소개</Link>
         </li>
         <li>
-          <Link to="/profile/velopert">velopert 프로필</Link>
-        </li>
-        <li>
-          <Link to="/profile/gildong">gildong 프로필</Link>
+          <Link to="/profiles">프로필</Link>
         </li>
       </ul>
       <hr />
       <Routes>
         <Route path="/" element={<Home />} exact={true} />
         <Route path="/about" element={<About />} />
-        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/profiles/*" element={<Profiles />} />
+        {/* react-router-dom v6에서는 "*"를 사용하여 경로가 다른 하위 경로를 포함할 수 있음을 명시해야 한다. 
+            /profiles 경로 아래에 있는 하위 <Routes>를 렌더링하려고 하기 위해 필요 */}
       </Routes>
     </div>
   );
